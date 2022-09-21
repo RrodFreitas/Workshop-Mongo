@@ -39,6 +39,13 @@ public class UserService {
 		entity = repository.insert(entity);
 		return new UserDTO(entity);
 	}
+	
+	public UserDTO update(String id, UserDTO dto) {
+		User entity = getEntityById(id);
+		copyDtoToEntity(dto, entity);
+		entity = repository.save(entity);
+		return new UserDTO(entity);
+	}
 
 	private void copyDtoToEntity(UserDTO dto, User entity) {
 		entity.setName(dto.getName());
