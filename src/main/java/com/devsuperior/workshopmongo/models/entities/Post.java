@@ -1,6 +1,8 @@
 package com.devsuperior.workshopmongo.models.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -9,8 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.devsuperior.workshopmongo.models.embedded.Author;
 import com.devsuperior.workshopmongo.models.embedded.Comment;
 
-@Document(collection = "posts")
-public class Post {
+@Document
+public class Post implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String id;
@@ -20,12 +23,10 @@ public class Post {
 	
 	private Author author;
 	
-	private List<Comment> comments;
+	private List<Comment> comments = new ArrayList<>();
 	
 	public Post() {
 	}
-	
-	
 	
 	public Post(String id, Instant moment, String title, String body, Author author) {
 		this.id = id;
