@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.devsuperior.workshopmongo.dto.PostDTO;
 import com.devsuperior.workshopmongo.dto.UserDTO;
 import com.devsuperior.workshopmongo.models.entities.User;
 import com.devsuperior.workshopmongo.repositories.UserRepository;
@@ -28,11 +29,6 @@ public class UserService {
 		return new UserDTO(entity);
 	}
 	
-	private User getEntityById(String id) {
-		Optional<User> result = repository.findById(id);
-		return result.orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
-	}
-	
 	public UserDTO insert(UserDTO dto) {
 		User entity = new User();
 		copyDtoToEntity(dto, entity);
@@ -50,6 +46,16 @@ public class UserService {
 	public void delete(String id) {
 		User entity = getEntityById(id);
 		repository.delete(entity);
+	}
+	
+	public List<PostDTO> getUserPosts(String id){
+		User user = getEntityById(id);
+		return user.getPosts().stream().map(x -> new PostDTO(x)).collect(Collectors.toList());
+	}
+	
+	private User getEntityById(String id) {
+		Optional<User> result = repository.findById(id);
+		return result.orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
 	}
 
 	private void copyDtoToEntity(UserDTO dto, User entity) {
